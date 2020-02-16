@@ -14,10 +14,10 @@
  * Nicholas Glover
  * 
  * File Information
- * File Name: Index.php
+ * File Name: upload.php
  * 
  * Purpose:
- * Main file for project, connects to database, contains php/html and displays upload page.
+ * PHP page processing file upload
  */
 
  <?php
@@ -74,14 +74,12 @@ function processsUploads(){
 
 function displayStatus($status){
     if ($status == "DBConnectionFail"){
-        ?>
-        <div><p>File Upload Failed - Error getting ready to insert data</p><div>
-
-    <?php } else if ($status == "DBOperationFail"){
-        ?> <div><p>File Upload Failed - Error inserting data into the database</p></div>
-        <?php } else {
-            ?> <div><p>File Upload Success</p></div> 
-            <?php 
+        echo "Database Connection Fail";
+    } else if ($status == "DBOperationFail"){
+        echo "Database Insert Fail";
+    } else {
+            echo "Success";
+    }
 }
 
 function displayErrors(array $error_msgs){
