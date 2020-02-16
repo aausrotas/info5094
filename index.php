@@ -7,6 +7,7 @@
 	
 <?php
     require_once("php/db_connect.php");
+	require_once("php/upload.php");
     if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST"){
         $err_msgs = validateFormData();
         if (count($err_msgs) > 0){
