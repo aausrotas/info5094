@@ -56,18 +56,40 @@ function processsUploads(){
     $status = "OK";
     $db_conn = connectDB();
     if (!$db_conn){
-    $status = "DB Connection Failed";
+    $status = "DBConnectionFail";
     } else {
         if ($allowed_exts === "csv"){
             $f = fopen($_FILES["uploadFiles"["name"]["tmp_name"]], "r");
             while (($csv = fgetcsv($f, 1000, ",")) !== FALSE){
                 $sql =$db_conn->prepare("INSERT into path_info(pi_id, path_name, operating_frequency, pi_description, pi_note) values ('$csv[0]', '$csv[1]', '$csv[2]', '$csv[3]', '$csv[4]')");
+                if (!$sql) {
+                    $status = "DBOperationFail";
+                }
             }
         }
-        
+        $db_conn = NULL;
     }
-
+    return $status;
 }
 
+function displayStatus($status){
+    if ($status == "DBConnectionFail"){
+        ?>
+        <div><p>File Upload Failed - Error getting ready to insert data</p><div>
+
+    <?php } else if ($status == "DBOperationFail"){
+        ?> <div><p>File Upload Failed - Error inserting data into the database</p></div>
+        <?php } else {
+            ?> <div><p>File Upload Success</p></div> 
+            <?php 
+}
+
+function displayErrors(array $error_msgs){
+    echo "<p>\n";
+    foreach ($error_msgs as $v){
+        echo $v."<br<\n";
+    }
+    echo "</p>\n";
+}
 
 ?>
